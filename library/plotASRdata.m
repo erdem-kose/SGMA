@@ -12,7 +12,7 @@ function plotASRdata(plotSettings, asrData)
     subplot(3,3,2); hold on;
     plot(asrData.T,asrData.SA_ew,plotSettings.line_colors{2},'LineWidth',plotSettings.line_width)
     plot(asrData.T_h,asrData.ds_h,'k','LineWidth',plotSettings.line_width)
-    axis tight; grid minor; title({'Absolute-Spectral Responses','East-West'});
+    axis tight; grid minor; title('East-West');
     ylabel('|a(t)|_{max} (cm/s^2)'); xlabel('T(sec)');
     fitImage(gca);
     
@@ -62,8 +62,12 @@ function plotASRdata(plotSettings, asrData)
     fitImage(gca);
     
     set(findall(prsFig,'-property','FontSize'),'FontSize',plotSettings.font_size);
-    
+
     if isfield(asrData,'name'), asrTag=asrData.name; else, asrTag='ASR'; end
+    if strcmp(asrTag,'SMA'), asrDesc='Spectral Matching vs Design Spectrum';
+    else,                    asrDesc='Absolute Spectral Response vs Design Spectrum'; end
+    figHeader(plotSettings, asrDesc);
+
     saveas(prsFig,['outputs/' plotSettings.file_name '_' asrTag plotSettings.postfix '.png']);
     set(prsFig,'Visible','on');
 end

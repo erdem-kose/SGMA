@@ -10,6 +10,7 @@ eqFolderName='20_07_2017_bodrum'; %place your data folder name that you got from
     
 plotSettings.file_name=[eqFolderName '/' eqFolderName];
 plotSettings.postfix=['_' char(datetime('now','Format','yyyyMMddHHmm'))]; %run timestamp _YYYYMMDDHHMM
+plotSettings.event=eqFolderName; %shown in the figure header
 plotSettings.line_width=1;
 plotSettings.line_colors={'r','g','b'}; %colors can be learnt from 'help plot'
 plotSettings.font_size=12;

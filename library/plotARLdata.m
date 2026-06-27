@@ -51,6 +51,8 @@ function plotARLdata(plotSettings, arlData)
         fitImage(gca);
     end
 
+    figHeader(plotSettings, 'Attenuation Relationship: Peak Horizontal Acceleration (cm/s^2)');
+
     saveas(arlFig,['outputs/' plotSettings.file_name '_AR' plotSettings.postfix '.png']);
     set(arlFig,'Visible','on');
 end

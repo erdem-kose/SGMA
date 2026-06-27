@@ -78,7 +78,8 @@ function plotAVXdata(plotSettings, avxData)
     fitImage(gca);
     
     set(findall(avxFig,'-property','FontSize'),'FontSize',plotSettings.font_size);
-    
+    figHeader(plotSettings, 'Waveforms: Arias Intensity / Acceleration / Velocity / Displacement');
+
     saveas(avxFig,['outputs/' plotSettings.file_name '_Waveform' plotSettings.postfix '.png']);
     set(avxFig,'Visible','on');
 end

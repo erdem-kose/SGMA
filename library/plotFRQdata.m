@@ -10,7 +10,7 @@ function plotFRQdata(plotSettings, frqData)
     
     subplot(3,3,2)
     stem(frqData.f,frqData.A_ew,plotSettings.line_colors{2},'marker','none','LineWidth',plotSettings.line_width)
-    axis tight; grid minor; title({frqData.type,'East-West'});
+    axis tight; grid minor; title('East-West');
     ylabel('|A(f)| (cm/s^2)'); xlabel('f(Hz)');
     fitImage(gca);
     
@@ -59,7 +59,8 @@ function plotFRQdata(plotSettings, frqData)
     fitImage(gca);
     
     set(findall(frqFig,'-property','FontSize'),'FontSize',plotSettings.font_size);
-    
+    figHeader(plotSettings, ['Frequency Spectra (' frqData.type '): Acceleration / Velocity / Displacement']);
+
     saveas(frqFig,['outputs/' plotSettings.file_name '_' frqData.type plotSettings.postfix '.png']);
     set(frqFig,'Visible','on');
 end

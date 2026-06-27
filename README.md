@@ -45,7 +45,8 @@ outputs/               Generated figures (created automatically, git-ignored)
 
 Figures are written to `outputs/<event>/<event>_<type>_<YYYYMMDDHHMM>.png`, where
 the `_YYYYMMDDHHMM` postfix is the run timestamp (so repeated runs do not
-overwrite each other).
+overwrite each other). Each figure also carries a descriptive header (event name
+plus what it shows) so it is identifiable on its own.
 
 ## Usage
 
@@ -81,9 +82,20 @@ Full single-record analysis plus event-wide attenuation. Key settings:
 | `arlSettings.range` | Map half-extent around the sources (km) |
 
 Pipeline: `readAFAD` → `extractAVXdata` → `extractFRQdata` → `extractASRdata`
-→ `extractARLdata` → plots. The `extractFRQdata`/`extractARLdata`/plot lines for
-the alternative methods and site classes are present but commented out — uncomment
-the ones you want. Outputs (depending on what is enabled):
+→ `extractARLdata` → plots. Which stages run and which figures are produced is
+controlled by the `opt` block near the top of the script (no need to comment code
+in/out):
+
+| Option | Meaning |
+| --- | --- |
+| `opt.spectra` | Cell of methods to compute/plot, any of `'welch'`, `'aryule'`, `'dft'` |
+| `opt.attenuation` | Cell of models, any of `'campbell'`, `'boore_A'`, `'boore_B'`, `'boore_C'` (combined on one map) |
+| `opt.plot_waveform` | `true`/`false` — waveform figure |
+| `opt.plot_spectra` | `true`/`false` — one spectrum figure per `opt.spectra` method |
+| `opt.plot_asr` | `true`/`false` — absolute spectral response figure |
+| `opt.plot_attenuation` | `true`/`false` — attenuation map figure |
+
+Outputs (depending on what is enabled):
 
 | File | Content |
 | --- | --- |
