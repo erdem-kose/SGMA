@@ -63,7 +63,8 @@ function plotASRdata(plotSettings, asrData)
     
     set(findall(prsFig,'-property','FontSize'),'FontSize',plotSettings.font_size);
     
-    saveas(prsFig,['outputs/' plotSettings.file_name '_ASR.png']);
+    if isfield(asrData,'name'), asrTag=asrData.name; else, asrTag='ASR'; end
+    saveas(prsFig,['outputs/' plotSettings.file_name '_' asrTag plotSettings.postfix '.png']);
     set(prsFig,'Visible','on');
 end
 

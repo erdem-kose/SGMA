@@ -51,7 +51,7 @@ function plotARLdata(plotSettings, arlData)
         fitImage(gca);
     end
 
-    saveas(arlFig,['outputs/' plotSettings.file_name '_AR.png']);
+    saveas(arlFig,['outputs/' plotSettings.file_name '_AR' plotSettings.postfix '.png']);
     set(arlFig,'Visible','on');
 end
 

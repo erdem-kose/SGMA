@@ -1,4 +1,5 @@
 function asrData = extractASRdata(asrSettings, avxData, eqData)
+    asrData.name='ASR';
     asrData.T=(asrSettings.T_min):asrSettings.T_step:(asrSettings.T_max);
 
     asrData.T_h=eqData.T_h; asrData.ds_h=eqData.ds_h;
@@ -8,7 +9,7 @@ function asrData = extractASRdata(asrSettings, avxData, eqData)
     [asrData.SX_ew,asrData.SV_ew,asrData.SA_ew]=absoluteSpectralResponse(asrData,avxData.a_ew,avxData.t,avxData.fs,asrSettings.zeta);
     [asrData.SX_ud,asrData.SV_ud,asrData.SA_ud]=absoluteSpectralResponse(asrData,avxData.a_ud,avxData.t,avxData.fs,asrSettings.zeta);
 
-    if (asrSettings.T_scale >= min(asrData.T)) || (asrSettings.T_scale <= max(asrData.T))
+    if (asrSettings.T_scale >= min(asrData.T)) && (asrSettings.T_scale <= max(asrData.T))
         [~,SA_ind]=min(pdist2(asrSettings.T_scale',asrData.T'));
         [~,h_ind]=min(pdist2(asrSettings.T_scale', asrData.T_h));
         [~,v_ind]=min(pdist2(asrSettings.T_scale', asrData.T_v));

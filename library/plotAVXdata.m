@@ -79,7 +79,7 @@ function plotAVXdata(plotSettings, avxData)
     
     set(findall(avxFig,'-property','FontSize'),'FontSize',plotSettings.font_size);
     
-    saveas(avxFig,['outputs/' plotSettings.file_name '_Waveform.png']);
+    saveas(avxFig,['outputs/' plotSettings.file_name '_Waveform' plotSettings.postfix '.png']);
     set(avxFig,'Visible','on');
 end
 

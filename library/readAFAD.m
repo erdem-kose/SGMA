@@ -2,23 +2,28 @@ function eqData=readAFAD(filename)
     %1 gal ~ 1 cm/s2
     g2cms2=980.6;%cm/s2
 
-    output_folder_name=['outputs\' filename];
+    output_folder_name=['outputs/' filename];
     if exist(output_folder_name,'dir')==0
         mkdir(output_folder_name);
     else
-        delete([output_folder_name '\*']);
+        delete([output_folder_name '/*']);
     end
-    
-    mat_file_name=['data\' filename '\' filename '.mat'];
+
+    mat_file_name=['data/' filename '/' filename '.mat'];
+    input_info=[dir(['data/' filename '/*.txt']); dir(['data/' filename '/*.csv'])];
     if exist(mat_file_name,'file')~=0
-        load(mat_file_name);
-        return;
+        mat_info=dir(mat_file_name);
+        %only use the cache when it is newer than every raw input file
+        if isempty(input_info) || (mat_info.datenum >= max([input_info.datenum]))
+            load(mat_file_name,'eqData');
+            return;
+        end
     end
-    
-    dinfo = dir(['data\' filename '\*.txt']);
+
+    dinfo = dir(['data/' filename '/*.txt']);
     minRecTime=inf; maxN=-inf;
     for k = 1 : length(dinfo)
-        active_filename = dinfo(k).name;  %just the name
+        active_filename = fullfile(dinfo(k).folder, dinfo(k).name);
 
         fid = fopen(active_filename);
         tline = fgetl(fid);
@@ -83,15 +88,12 @@ function eqData=readAFAD(filename)
         disp(' ');
         fclose(fid);
 
-        eqData{k}.EQ_NS=eqData{k}.EQ_NS;
-        eqData{k}.EQ_EW=eqData{k}.EQ_EW;
-        eqData{k}.EQ_UD=eqData{k}.EQ_UD;
-        ds_h_dinfo = dir(['data\' filename '\*_ds_h.csv']);
-        ds_h = csvread(ds_h_dinfo(1).name,1,0);
+        ds_h_dinfo = dir(['data/' filename '/*_ds_h.csv']);
+        ds_h = csvread(fullfile(ds_h_dinfo(1).folder, ds_h_dinfo(1).name),1,0);
         eqData{k}.T_h=ds_h(:,1);
         eqData{k}.ds_h=ds_h(:,2).*g2cms2;
-        ds_v_dinfo = dir(['data\' filename '\*_ds_v.csv']);
-        ds_v = csvread(ds_v_dinfo(1).name,1,0);
+        ds_v_dinfo = dir(['data/' filename '/*_ds_v.csv']);
+        ds_v = csvread(fullfile(ds_v_dinfo(1).folder, ds_v_dinfo(1).name),1,0);
         eqData{k}.T_v=ds_v(:,1);
         eqData{k}.ds_v=ds_v(:,2).*g2cms2;
         
@@ -111,5 +113,5 @@ function eqData=readAFAD(filename)
         eqData{k}.t=eqData{k}.t+eqData{k}.recStartTime;
     end
     
-    save(mat_file_name);
+    save(mat_file_name,'eqData');
 end

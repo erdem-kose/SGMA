@@ -1,5 +1,5 @@
 function spcData = extractFRQdata(spcSettings,avxData)
-    warning('off');
+    ws=warning('off','all'); restoreWarn=onCleanup(@()warning(ws)); %restore warnings on exit
     
     n=size(avxData.t,2);
     N=2.^nextpow2(n);

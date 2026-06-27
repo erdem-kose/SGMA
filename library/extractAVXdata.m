@@ -23,11 +23,11 @@ function avxData = extractAVXdata(extractSettings, eqData)
         M=round(avxData{i}.fs/2); %downsampling coefficient
 
         %acceleration data, pre-processing and airas intensity
-        avxData{i}.a_ns=customFilter(b,a,eqData{i}.EQ_NS(n_range));
+        avxData{i}.a_ns=customFilter(b,a,eqData{i}.EQ_NS(n_range),eqData{i}.fs);
         avxData{i}.a_ns=customResample(avxData{i}.a_ns,L,M);
-        avxData{i}.a_ew=customFilter(b,a,eqData{i}.EQ_EW(n_range));
+        avxData{i}.a_ew=customFilter(b,a,eqData{i}.EQ_EW(n_range),eqData{i}.fs);
         avxData{i}.a_ew=customResample(avxData{i}.a_ew,L,M);
-        avxData{i}.a_ud=customFilter(b,a,eqData{i}.EQ_UD(n_range));
+        avxData{i}.a_ud=customFilter(b,a,eqData{i}.EQ_UD(n_range),eqData{i}.fs);
         avxData{i}.a_ud=customResample(avxData{i}.a_ud,L,M);
 
         %new axes and filter
@@ -47,20 +47,19 @@ function avxData = extractAVXdata(extractSettings, eqData)
         avxData{i}.Ia_ud=(pi./(2.*g2cms2)).*cumtrapz(avxData{i}.t, avxData{i}.a_ud.^2);
 
         %velocity is integral of acceleration in time plus initial velocity
-        avxData{i}.v_ns=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ns));
-        avxData{i}.v_ew=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ew));
-        avxData{i}.v_ud=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ud));
+        avxData{i}.v_ns=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ns),avxData{i}.fs);
+        avxData{i}.v_ew=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ew),avxData{i}.fs);
+        avxData{i}.v_ud=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.a_ud),avxData{i}.fs);
 
         %displacement is integral of velocity in time plus initial velocity
-        avxData{i}.x_ns=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ns));
-        avxData{i}.x_ew=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ew));
-        avxData{i}.x_ud=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ud));
+        avxData{i}.x_ns=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ns),avxData{i}.fs);
+        avxData{i}.x_ew=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ew),avxData{i}.fs);
+        avxData{i}.x_ud=customFilter(b,a,cumtrapz(avxData{i}.t, avxData{i}.v_ud),avxData{i}.fs);
     end
 end
 
-function y=customFilter(b,a,x)
+function y=customFilter(b,a,x,fs)
     fc=1.5;
-    fs=100;
 
     wc=fc./(fs/2);
     alpha=1-wc;

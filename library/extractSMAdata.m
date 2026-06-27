@@ -1,4 +1,5 @@
 function asrData = extractSMAdata(smaSettings, spcSettings, avxData, eqData)
+    asrData.name='SMA';
     asrData.T=(smaSettings.T_min):smaSettings.T_step:(smaSettings.T_max);
 
     K=size(asrData.T,2);
